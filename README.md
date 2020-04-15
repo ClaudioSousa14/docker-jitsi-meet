@@ -55,12 +55,12 @@ or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f ji
 
 ### Security note
 
-This setup used to have default passwords for internal accounts used across components. In order to make the default setup
+This setup used to have default passwords for intetrnal accounts used across components. In order to make the default setup
 secure by default these have been removed and the respective containers won't start without having a password set.
 
-Strong passwords may be generated as follows: `./gen-passwords.sh`
+Strong passwordds may be generated as follows: `./gen-passwords.sh`
 This will modify your `.env` file (a backup is saved in `.env.bak`) and set strong passwords for each of the
-required options. Passwords are generated using `openssl rand -hex 16` .
+require options. Passwords are  generated using `openssl rand -hex 16` .
 
 DO NOT reuse any of the passwords.
 
@@ -142,8 +142,8 @@ Variable | Description | Example
 `DOCKER_HOST_ADDRESS` | IP address of the Docker host, needed for LAN environments | 192.168.1.1
 `PUBLIC_URL` | Public URL for the web service | https://meet.example.com
 
-**NOTE**: The mobile apps won't work with self-signed certificates (the default).
-See below for instructions on how to obtain a proper certificate with Let's Encrypt.
+**NOTE**: The mobile apps won't work with self-signed certificates (the default)
+see below for instructions on how to obtain a proper certificate with Let's Encrypt.
 
 ### Let's Encrypt configuration
 
@@ -158,6 +158,26 @@ Variable | Description | Example
 `LETSENCRYPT_EMAIL` | E-Mail for receiving important account notifications (mandatory) | alice@atlanta.net
 
 In addition, you will need to set `HTTP_PORT` to 80 and `HTTPS_PORT` to 443.
+
+### Configure SSL certificate (NO Let's Encrypt)
+
+If you wold like to configure your own SSL certificate, instead of use a Let's Encrypt certificate you need to follow this instructions:
+
+```
+# mkdir /etc/ssl/jitsi
+```
+Insert your own certificate and key at that location, with name "cert.crt" and "cert.key".
+
+Insert a new line at "docker-compose.yml" file, at services-> web-> volumes:
+
+```
+services:
+    # Frontend
+    web:
+        volumes:
+            - /etc/ssl/jitsi:/config/keys
+```
+
 
 ### SIP gateway configuration
 
@@ -202,8 +222,8 @@ echo "snd-aloop" >> /etc/modules
 lsmod | grep snd_aloop
 ```
 
-NOTE: If you are running on AWS you may need to reboot your machine to use the generic kernel instead
-of the "aws" kernel. If after reboot, your machine is still using the "aws" kernel, you'll need to manually update the grub file. So just run:
+NOTE: if you are running on AWS you may need to reboot your machine to use the generic kernel instead
+of the "aws" kernel. If after reboot, your machine is still using the "aws" kernel, you'll need to manually update the grub file. So just run
 ```
 # open the grub file in editor
 nano /etc/default/grub
@@ -256,7 +276,7 @@ For using multiple Jibri instances, you have to select different loopback interf
   ...
   ```
 
-  To setup the second instance, run container with changed `/home/jibri/.asoundrc`:
+  For setup the second instance, run container with changed `/home/jibri/.asoundrc`:
 
   ```
   ...
